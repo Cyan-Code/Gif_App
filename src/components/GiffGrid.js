@@ -1,39 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { GifGrid } from './GifGridItem';
+import React from 'react'
+import { useFetchGifs } from '../hooks/useFetchGifs';
+import { GifGridItem } from './GifGridItem';
 
 export const GiffGrid = ({ category }) => {
 
-  const [images, setImages] = useState([]);
+  const {loading, data} = useFetchGifs(category)
 
-  useEffect( () => {
-    getGifs()
-  }, []);
-
-  const getGifs = async() => {
-    const url = 'http://api.giphy.com/v1/gifs/search?q=OnePunch&limit=10&api_key=06JVgbCCAEDEX3x1OCPstMV1IejYv9Ed'
-    const resp = await fetch( url )
-    const { data } = await resp.json()
-
-    const gifs = data.map ( img => {
-      return {
-        id: img.id,
-        title: img.title,
-        url: img.images?.downsized_medium.url
-      } 
-    })
-    // Agregar teoria de Hooks en Anki
-    setImages(gifs)
-  };
- 
   return (
     <>
-    <h3> {category} </h3>
+    <h3 className="card animate__fadeIn"> {category} </h3>
+    
+    { loading && <p className = "card animate__flash">Loading</p>}
+
     <div className="card-grid">
       <ol>
         <li>
           {
-            images.map ( img => (
-              <GifGrid
+            data.map ( img => (
+              <GifGridItem
                 key = { img.id }
                 { ...img }
               />
