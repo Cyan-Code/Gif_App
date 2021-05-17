@@ -7,6 +7,7 @@ export const AddCategory = ( {setCategories} ) => {
 
   const handleInputChange = (event) => {
     setInputValue (event.target.value)
+    console.log('handleInputChange llamado')
   }
 
   const handleSubmit = (event) => {
